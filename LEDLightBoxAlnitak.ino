@@ -27,7 +27,7 @@ Send     : >D000\n      //turn light off (brightness value should not be changed
 Recieve  : *D19000\n    //confirms light turned off.
 */
 
-volatile int ledPin = 13;      // the pin that the LED is attached to, needs to be a PWM pin.
+volatile int ledPin = 11;      // the pin that the LED is attached to, needs to be a PWM pin.
 int brightness = 0;
 
 enum devices
@@ -65,6 +65,15 @@ int coverStatus = UNKNOWN;
 
 void setup()
 {
+  //----- PWM frequency for D3 & D11 -----
+  //Timer2 divisor = 2, 16, 64, 128, 512, 2048
+  TCCR2B = TCCR2B & B11111000 | B00000001;    // 31KHz
+  //TCCR2B = TCCR2B & B11111000 | B00000010;    // 3.9KHz
+  //TCCR2B = TCCR2B & B11111000 | B00000011;    // 980Hz
+  //TCCR2B = TCCR2B & B11111000 | B00000100;    // 490Hz (default)
+  //TCCR2B = TCCR2B & B11111000 | B00000101;    // 245Hz
+  //TCCR2B = TCCR2B & B11111000 | B00000110;    // 122.5Hz
+  //TCCR2B = TCCR2B & B11111000 | B00000111;    // 30.6Hz
   // initialize the serial communication:
   Serial.begin(9600);
   // initialize the ledPin as an output:
